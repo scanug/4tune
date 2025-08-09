@@ -62,8 +62,11 @@ export default function JoinPage() {
         localStorage.setItem('playerId', playerId);
       }
 
+      const existing = players[playerId];
+      const preservedScore = typeof existing?.score === 'number' ? existing.score : 0;
+
       await update(ref(db, `rooms/${code}/players`), {
-        [playerId]: { joinedAt: Date.now(), name: playerName.trim() }
+        [playerId]: { joinedAt: Date.now(), name: playerName.trim(), score: preservedScore }
       });
 
       setLoading(false);
@@ -94,6 +97,7 @@ export default function JoinPage() {
         style={{ textTransform: 'uppercase', fontSize: '1.5rem', padding: '0.5rem' }}
       />
       <button
+        className="btn-3d"
         onClick={joinRoom}
         disabled={loading || inputCode.length !== 4 || !playerName.trim()}
         style={{ marginLeft: 10 }}

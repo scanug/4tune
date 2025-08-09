@@ -43,8 +43,12 @@ export default function HostPage() {
         await set(roomRef, {
           createdAt: Date.now(),
           status: 'waiting',
+          round: 0,
+          currentRange: { min: null, max: null },
+          winningNumber: null,
           hostId: playerId,
-          players: {}
+          players: {},
+          bets: {}
         });
         setRoomCode(code);
         setLoading(false);
@@ -66,7 +70,7 @@ export default function HostPage() {
         </>
       ) : (
         <>
-          <button onClick={createRoom} disabled={loading}>
+          <button className="btn-3d" onClick={createRoom} disabled={loading}>
             {loading ? 'Creando...' : 'Genera stanza'}
           </button>
           {error && <p style={{ color: 'red' }}>{error}</p>}
