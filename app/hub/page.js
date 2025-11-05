@@ -27,7 +27,7 @@ export default function HubPage() {
             <li style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px dashed rgba(17,24,39,0.2)', borderRadius: 10, padding: '10px 12px', background: 'rgba(255,255,255,0.6)' }}>
               <div>
                 <div style={{ fontWeight: 800, color: '#111827' }}>Prossimamente...</div>
-                <div style={{ fontSize: 13, opacity: 0.85, color: '#111827' }}>Nuovi giochi in arrivo nell'hub.</div>
+                <div style={{ fontSize: 13, opacity: 0.85, color: '#111827' }}>Nuovi giochi in arrivo nell&apos;hub.</div>
               </div>
               <button className="btn-3d" disabled>In arrivo</button>
             </li>
