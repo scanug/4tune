@@ -1,14 +1,24 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Rubik, JetBrains_Mono, Press_Start_2P } from "next/font/google";
 import "./globals.css";
+import BackgroundVideo from "../components/BackgroundVideo";
 
-const geistSans = Geist({
+const geistSans = Rubik({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: 'swap',
 });
 
-const geistMono = Geist_Mono({
+const geistMono = JetBrains_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: 'swap',
+});
+
+const pixelFont = Press_Start_2P({
+  variable: "--font-pixel",
+  subsets: ["latin"],
+  weight: '400',
+  display: 'swap',
 });
 
 export const metadata = {
@@ -20,8 +30,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${pixelFont.variable} ${pixelFont.className} antialiased`}
       >
+        {/* Global background video (client-only to avoid hydration mismatches) */}
+        <BackgroundVideo />
         {children}
       </body>
     </html>

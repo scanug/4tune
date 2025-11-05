@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ref, get, update } from 'firebase/database';
 import { db } from '../../lib/firebase';
 import { useRouter } from 'next/navigation';
@@ -12,6 +12,19 @@ export default function JoinPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  // preload name from localStorage
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('playerName');
+      if (saved) setPlayerName(saved);
+    } catch {}
+  }, []);
+
+  function handleNameChange(value) {
+    setPlayerName(value);
+    try { localStorage.setItem('playerName', value); } catch {}
+  }
 
   async function joinRoom() {
     setLoading(true);
@@ -66,7 +79,7 @@ export default function JoinPage() {
       const preservedScore = typeof existing?.score === 'number' ? existing.score : 0;
 
       await update(ref(db, `rooms/${code}/players`), {
-        [playerId]: { joinedAt: Date.now(), name: playerName.trim(), score: preservedScore }
+        [playerId]: { joinedAt: Date.now(), name: playerName.trim(), score: preservedScore, avatar: localStorage.getItem('playerAvatar') || null }
       });
 
       setLoading(false);
@@ -84,7 +97,7 @@ export default function JoinPage() {
       <input
         type="text"
         value={playerName}
-        onChange={e => setPlayerName(e.target.value)}
+        onChange={e => handleNameChange(e.target.value)}
         placeholder="Il tuo nome"
         style={{ fontSize: '1.2rem', padding: '0.5rem', marginRight: 10 }}
       />
@@ -96,11 +109,30 @@ export default function JoinPage() {
         placeholder="Inserisci codice stanza"
         style={{ textTransform: 'uppercase', fontSize: '1.5rem', padding: '0.5rem' }}
       />
+
+      {/* Avatar selector */}
+      <div style={{ marginTop: 12 }}>
+        <p style={{ marginBottom: 6 }}>Scegli un avatar:</p>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', maxWidth: 360 }}>
+          {['😀','😎','🤖','🐶','🐱','🦊','🐼','🐵','🐸','🐙','👻','🎩'].map(av => (
+            <button
+              key={av}
+              type="button"
+              className="btn-3d"
+              onClick={() => { try { localStorage.setItem('playerAvatar', av); } catch {}; }}
+              style={{ padding: '0.4rem 0.7rem' }}
+            >
+              {av}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <button
         className="btn-3d"
         onClick={joinRoom}
         disabled={loading || inputCode.length !== 4 || !playerName.trim()}
-        style={{ marginLeft: 10 }}
+        style={{ marginLeft: 10, marginTop: 12 }}
       >
         {loading ? 'Caricamento...' : 'Entra'}
       </button>

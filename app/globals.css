@@ -1,3 +1,7 @@
+/* Responsive base sizing */
+html {
+  font-size: clamp(13px, 1.1vw + 10px, 16px);
+}
 @import "tailwindcss";
 
 :root {
@@ -10,6 +14,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-pixel: var(--font-pixel);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +27,248 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-pixel), var(--font-sans), Arial, Helvetica, sans-serif;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+}
+
+/* Ensure 8-bit font across interactive controls */
+html, body, button, input, select, textarea {
+  font-family: var(--font-pixel), var(--font-sans), Arial, Helvetica, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* 8-bit headings */
+h1, h2, h3 {
+  font-family: var(--font-pixel), var(--font-sans), Arial, Helvetica, sans-serif;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+
+/* Optional utility to force pixel font */
+.pixel { font-family: var(--font-pixel), var(--font-sans), Arial, Helvetica, sans-serif; }
+
+/* 3D button style */
+.btn-3d {
+  display: inline-block;
+  padding: clamp(0.6rem, 1.2vw, 0.8rem) clamp(1rem, 2.2vw, 1.4rem);
+  border: 0;
+  border-radius: clamp(10px, 1.6vw, 14px);
+  background: linear-gradient(180deg, #6366f1 0%, #4f46e5 100%);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  font-size: clamp(12px, 1.8vw, 16px);
+  line-height: 1;
+  box-shadow: 0 8px 0 #312e81, 0 12px 22px rgba(79, 70, 229, 0.35);
+  transform: translateY(0);
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+  cursor: pointer;
+}
+
+.btn-3d:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 0 #312e81, 0 16px 28px rgba(79, 70, 229, 0.45);
+}
+
+.btn-3d:active {
+  transform: translateY(6px);
+  box-shadow: 0 2px 0 #312e81, 0 6px 12px rgba(79, 70, 229, 0.35);
+}
+
+.btn-3d:focus-visible {
+  outline: 3px solid rgba(99, 102, 241, 0.5);
+  outline-offset: 3px;
+}
+
+.btn-3d:disabled {
+  filter: grayscale(0.3) brightness(0.9);
+  cursor: not-allowed;
+  box-shadow: 0 8px 0 #312e81, 0 12px 22px rgba(79, 70, 229, 0.25);
+}
+
+/* Reveal animation for winning number */
+@keyframes pop-reveal {
+  0% { transform: scale(0.6); opacity: 0; filter: blur(8px); }
+  60% { transform: scale(1.08); opacity: 1; filter: blur(0); }
+  100% { transform: scale(1); }
+}
+
+.reveal-pop {
+  animation: pop-reveal 420ms ease-out;
+}
+
+/* Countdown pulse */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+.pulse {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+/* Fade up animation */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fade-up 320ms ease-out both; }
+.fade-up.delay-100 { animation-delay: 100ms; }
+.fade-up.delay-200 { animation-delay: 200ms; }
+.fade-up.delay-300 { animation-delay: 300ms; }
+
+/* Pop-in animation for confirmations */
+@keyframes pop-in {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+.overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.overlay-content {
+  background: #111827;
+  color: #fff;
+  padding: 20px 24px;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.45);
+  text-align: center;
+  animation: pop-in 260ms ease-out both;
+}
+
+.check-emoji {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Small status bubble */
+@keyframes bubble-in {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.bubble {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  line-height: 1.2;
+  animation: bubble-in 160ms ease-out both;
+}
+.bubble.success { background: rgba(16,185,129,0.18); color: #10b981; border: 1px solid rgba(16,185,129,0.35); }
+.bubble.wait { background: rgba(234,179,8,0.18); color: #f59e0b; border: 1px solid rgba(234,179,8,0.35); }
+
+/* Podium styles */
+.podium { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; align-items: end; }
+.podium-item { text-align: center; border-radius: 12px; padding: 12px 10px; animation: pop-in 260ms ease-out both; }
+.podium-item .name { font-weight: 700; }
+.podium-item .score { opacity: 0.9; font-size: 12px; }
+.podium-1 { background: linear-gradient(180deg, #fde68a, #f59e0b); color: #1f2937; box-shadow: 0 10px 24px rgba(245, 158, 11, 0.35); transform-origin: bottom; }
+.podium-2 { background: linear-gradient(180deg, #e5e7eb, #9ca3af); color: #111827; box-shadow: 0 8px 20px rgba(156, 163, 175, 0.35); }
+.podium-3 { background: linear-gradient(180deg, #fca5a5, #ef4444); color: #111827; box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35); }
+.podium-1 .trophy { font-size: 28px; display: block; }
+
+/* Reactions */
+.reactions-bar { display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap; }
+.reaction-btn { padding: 6px 10px; font-size: 18px; border-radius: 999px; border: 0; cursor: pointer; background: #111827; color: #fff; box-shadow: 0 6px 16px rgba(0,0,0,0.25); }
+
+@keyframes float-up { 0% { transform: translateY(10px); opacity: 0;} 20% {opacity: 1;} 100% { transform: translateY(-28px); opacity: 0; } }
+.reaction-float { position: absolute; right: 12px; bottom: 12px; animation: float-up 1500ms ease-out forwards; font-size: 20px; }
+
+/* Modern accessible input */
+.input-modern {
+  width: 100%;
+  padding: clamp(0.6rem, 1.2vw, 0.75rem) clamp(0.7rem, 1.2vw, 0.9rem);
+  font-size: clamp(14px, 1.6vw, 17px);
+  color: #111827;
+  background: #ffffff;
+  border: 2px solid #c7d2fe; /* indigo-200 */
+  border-radius: clamp(10px, 1.4vw, 12px);
+}
+.input-modern::placeholder { color: #6b7280; }
+.input-modern:focus {
+  outline: none;
+  border-color: #4f46e5; /* indigo-600 */
+  box-shadow: 0 0 0 4px rgba(79,70,229,0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .input-modern {
+    color: #e5e7eb;
+    background: #111827;
+    border-color: #1f2937;
+  }
+  .input-modern::placeholder { color: #9ca3af; }
+  .input-modern:focus {
+    border-color: #818cf8;
+    box-shadow: 0 0 0 4px rgba(129,140,248,0.2);
+  }
+}
+
+/* Multiplier badge */
+@keyframes mult-pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(99,102,241,0.5); }
+  70% { transform: scale(1.06); box-shadow: 0 0 20px 8px rgba(99,102,241,0.25); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(99,102,241,0); }
+}
+.multiplier-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(180deg,#818cf8,#4f46e5);
+  color: #fff;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 6px 12px;
+  animation: mult-pulse 1.2s infinite ease-in-out;
+}
+
+/* Winner flashing glow */
+@keyframes flash-glow {
+  0% { text-shadow: 0 0 0px rgba(255,255,255,0); color: #ffffff; }
+  50% { text-shadow: 0 0 18px rgba(251,191,36,0.9), 0 0 32px rgba(245,158,11,0.6); color: #fde68a; }
+  100% { text-shadow: 0 0 0px rgba(255,255,255,0); color: #ffffff; }
+}
+.winner-flash { animation: flash-glow 700ms ease-in-out 3; }
+
+/* Slot reel box */
+.reel-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 80px;
+  font-size: 2rem;
+  font-weight: 800;
+  border-radius: 12px;
+  background: linear-gradient(180deg,#f3f4f6,#e5e7eb);
+  color: #111827;
+  border: 2px solid rgba(99,102,241,0.35);
+  box-shadow: inset 0 8px 18px rgba(0,0,0,0.08), 0 10px 24px rgba(0,0,0,0.12);
+}
+@media (prefers-color-scheme: dark) {
+  .reel-box {
+    background: linear-gradient(180deg,#111827,#0b1220);
+    color: #e5e7eb;
+    border-color: rgba(129,140,248,0.45);
+  }
+}
+
+/* Mobile fine-tuning */
+@media (max-width: 480px) {
+  h1 { font-size: clamp(18px, 6vw, 22px); }
+  .btn-3d { font-size: clamp(12px, 3.5vw, 14px); padding: 0.6rem 1rem; }
+  .bubble { font-size: 10px; }
+  .reel-box { width: 96px; height: 68px; font-size: 1.6rem; }
 }
